@@ -16,7 +16,7 @@ class Library(object):
     self.library_file = library_file
     # Read the data library
     (self.file_tags, self.file_hashes) = self._read_library(library_file)
-    self.filter = set(tag_filter) if tag_filter else set()
+    self.filter = set(x.lower() for x in tag_filter) if tag_filter else set()
 
   def _read_library(self, filename):
     file_tags = {}
@@ -26,10 +26,10 @@ class Library(object):
       for line in f.readlines():
         parts = line.split()
         if parts[0].startswith("/"):
-          folder_tags[parts[0]] = {x.strip(":") for x in parts[1:]}
+          folder_tags[parts[0]] = {x.strip(":").lower() for x in parts[1:]}
         else:
           hashes[parts[1]] = parts[0]
-          tags = {x.strip(":") for x in parts[2:]}
+          tags = {x.strip(":").lower() for x in parts[2:]}
           for folder in folder_tags.keys():
             if parts[1].startswith(folder):
               tags.update(folder_tags[folder])
@@ -46,5 +46,11 @@ class Library(object):
     return files[0]
 
   def find_files(self, tags):
-    tags = set(tags).union(self.filter)
+    tags = set(x.lower() for x in tags).union(self.filter)
     return [x for x in self.file_tags.keys() if self.file_tags[x].issuperset(tags)]
+
+shared_library = None
+try:
+  shared_library = Library()
+except:
+  pass
