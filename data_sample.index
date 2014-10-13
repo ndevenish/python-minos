@@ -1,0 +1,13 @@
+                                          /minos/app/nickd/MC/D07_dogwood3/BravoTwo/helpers                                 :MC :Daikon07 :Dogwood3 :BravoTwo :LE :helper
+fb397c11bc1315cc3a6e6f915ee5e6e42253f791  /minos/app/nickd/MC/D07_dogwood3/BravoTwo/helpers/CombinedRun1LEBravoTwo.root     :combined
+487f0a976fcc11d8a4e4d03fb20fd79294dd6c33  /minos/app/nickd/MC/D07_dogwood3/BravoTwo/helpers/CombinedRun2LEBravoTwo.root     :combined
+c3235da3c82e4ad51fc2f3dbf3e7a9a9da383c52  /minos/app/nickd/MC/D07_dogwood3/BravoTwo/helpers/CombinedRun3LEBravoTwo.root     :combined
+fec17534a49a759587615f3d832eac133b22fd1a  /minos/app/nickd/MC/D07_dogwood3/BravoTwo/helpers/FDRun1LEBravoTwo_Summary.root   :run1 :FD   :summary
+b492092dc97f587dfc2cf695a6fa89db34f17a06  /minos/app/nickd/MC/D07_dogwood3/BravoTwo/helpers/FDRun2LEBravoTwo_Summary.root   :run2 :FD   :summary
+4e2dcd146f46e46883cf4b4bb6bd6eb07a60603e  /minos/app/nickd/MC/D07_dogwood3/BravoTwo/helpers/FDRun3LEBravoTwo_Summary.root   :run3 :FD   :summary
+3557903620548ca6a873bc702473adacf16bae56  /minos/app/nickd/MC/D07_dogwood3/BravoTwo/helpers/NDRun1LEBravoTwo_Summary.root   :run1 :ND   :summary
+69980aaf5267137e10622f42577c06186e2c5c83  /minos/app/nickd/MC/D07_dogwood3/BravoTwo/helpers/NDRun2LEBravoTwo_Summary.root   :run2 :ND   :summary
+459e698590199ccfb05a3fce4b3192f59df99d1c  /minos/app/nickd/MC/D07_dogwood3/BravoTwo/helpers/NDRun3LEBravoTwo_Summary.root   :run3 :ND   :summary
+0949727dac7e416bb3b92e05e403b25c7b127305  /minos/app/nickd/MC/D07_dogwood3/BravoTwo/helpers/TauRun1LEBravoTwo_Summary.root  :run1 :Tau  :summary
+20886c4f3625978568232e7d0f79ca1823c89ef1  /minos/app/nickd/MC/D07_dogwood3/BravoTwo/helpers/TauRun2LEBravoTwo_Summary.root  :run2 :Tau  :summary
+558e16565e15310c3ccd4d53d08a0de94372db25  /minos/app/nickd/MC/D07_dogwood3/BravoTwo/helpers/TauRun3LEBravoTwo_Summary.root  :run3 :Tau  :summary
