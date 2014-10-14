@@ -1,7 +1,7 @@
 # coding: utf-8
 
 from .structs import ChargeSignTuple
-from .pyroot import NuMatrixSpectrum, NuMMRunFC, NuMMHelperCPT
+from .pyroot import NuMatrixSpectrum, NuMMRunFC, NuMMHelperCPT, NuMMParameters
 from minos.data import shared_library
 
 def load_matrix_pair(filename, histname):
@@ -38,4 +38,3 @@ def prepare_fake_run(data_tags, pot):
   run = NuMMRunFC(helper, nd_data.nq, nd_data.pq, fd_data.nq, fd_data.pq)
   run.QuietModeOn()
   return run
-
