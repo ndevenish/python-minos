@@ -6,7 +6,7 @@ setup(name="minos",
       author="Nicholas Devenish",
       author_email="ndevenish@gmail.com",
       packages=['minos'],
-#      scripts=['bin/minos-cmake'],
+      scripts=['bin/minos-data'],
 #      package_data={'minos_cmake': ['data/*.txt', 'data/*.cmake']},
       requires=["docopt"],
      )

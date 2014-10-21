@@ -41,4 +41,17 @@ class Parameters(object):
     pars.Dm2Bar(self.parameters.get("dm2bar", 0.0))
     pars.Sn2Bar(self.parameters.get("sn2bar", 0.0))
     pars.FixAllParameters()
+    pars.SetQuietMode(True)
     return pars
+
+  def copy_with(self, **kwargs):
+    par = Parameters(**self.parameters)
+    par.parameters.update({k: v for k,v in kwargs.items() if k in self.VALID_PARAM})
+    return par
+
+  def bounds(self, value):
+    if value in ["dm2", "dm2bar"]:
+      return (0, None)
+    elif value in ["sn2", "sn2bar"]:
+      return (0, 1)
+    raise RuntimeError("Could not identify bounds for variable {}".format(value))
