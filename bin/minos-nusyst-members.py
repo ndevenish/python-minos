@@ -3,8 +3,6 @@
 """
 Uses clang to static-analyse NuSystematics.cxx to determine NuEvent member usage.
 
-Outputs a csv to STDOUT.
-
 Usage:
   minos-nusyst-members.py [<systematics_file>]
 """
@@ -22,6 +20,7 @@ try:
   from clang.cindex import CursorKind
 except ImportError as ex:
   print ("Could not import libclang; " + str(ex))
+  print (__doc__)
   sys.exit(1)
 
 def iterate_nodes(node):
