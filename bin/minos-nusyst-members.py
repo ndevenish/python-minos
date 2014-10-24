@@ -19,7 +19,7 @@ try:
   import clang.cindex
   from clang.cindex import CursorKind
 except ImportError as ex:
-  print ("Could not import libclang; " + str(ex))
+  print ("Error: Could not import libclang; " + str(ex))
   print (__doc__)
   sys.exit(1)
 
