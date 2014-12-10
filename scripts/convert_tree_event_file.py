@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-"""Convert an event TTree file to python tables, with POT.
+"""Convert a NuFCEvent TTree to python tables
 
-Usage: convert_tree_event_file.py <input> [<output>]"""
+Usage: convert.py <input> [<output>]"""
 
 from __future__ import absolute_import, print_function
 
@@ -35,15 +35,15 @@ if __name__ == "__main__":
 
   f = TFile(arguments["<input>"])
   # Find the lone TTree
-  tree_key = [x for x in f.GetListOfKeys() if x.GetClassName() == "TTree"]
+  tree_key = {x.GetName() for x in f.GetListOfKeys() if x.GetClassName() == "TTree"}
   if not tree_key:
     logger.error("Could not find TTree in file " + arguments["<input>"])
     sys.exit(1)
   if len(tree_key) > 1:
     logger.error("More than one TTree found in file " + arguments["<input>"])
     sys.exit(1)
-  tree_name = tree_key[0].GetName()
-  tree = f.Get(tree_key[0].GetName())
+  tree_name = tree_key.pop()
+  tree = f.Get(tree_name)
   logger.info("Converting tree named " + tree_name)
 
   leaves = [x for x in tree.GetListOfLeaves() if x.GetTypeName() in ACCEPTED_TYPES and not x.GetName() in {"fBits", "fUniqueID"}]
