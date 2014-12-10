@@ -2,6 +2,12 @@
 
 import ROOT
 
+import ROOT
+from ROOT import TString
+
+
+SystematicMap = ROOT.map(TString, ROOT.Double)
+
 # Load all required libraries for ntupleutils
 ROOT.gSystem.Load("libCore.so")
 ROOT.gSystem.Load("libRIO.so")
@@ -63,6 +69,11 @@ ROOT.gSystem.Load("libNtupleUtils.so")
 
 ROOT.gSystem.Load("libOscProb.so")
 #ROOT.gSystem.Load("libNtupleUtilsFC.so")
+
+# For fiducial volume function
+ROOT.gSystem.Load("libRecoBase.so")
+ROOT.gSystem.Load("libDataUtil.so")
+
 
 from ROOT import (MajCInfo, MajorityCurvature, NuCounter, NuCuts,
                   NuDemoModule, NuEvent, NuExtraction, NuFluctuator,
