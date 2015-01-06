@@ -1,8 +1,9 @@
 # coding: utf-8
 
 from .structs import ChargeSignTuple
-from .pyroot import NuMatrixSpectrum, NuMMRunFC, NuMMHelperCPT, NuMMParameters
+from .pyroot import NuMatrixSpectrum, NuMMRunFC, NuMMHelperCPT, NuMMParameters, NuUtilities
 from minos.data import shared_library
+from array import array
 
 def load_matrix_pair(filename, histname):
   """Loads a pair of matrixspectrums from a data file.
@@ -38,3 +39,7 @@ def prepare_fake_run(data_tags, pot):
   run = NuMMRunFC(helper, nd_data.nq, nd_data.pq, fd_data.nq, fd_data.pq)
   run.QuietModeOn()
   return run
+
+def binningscheme4():
+  "Returns a numpy array of the standardised NuMuBar binning, kNuMuBar0325Std2"
+  return array('d', NuUtilities.RecoBins(4))
