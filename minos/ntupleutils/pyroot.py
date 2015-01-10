@@ -5,9 +5,6 @@ import ROOT
 import ROOT
 from ROOT import TString
 
-
-SystematicMap = ROOT.map(TString, ROOT.Double)
-
 # Load all required libraries for ntupleutils
 ROOT.gSystem.Load("libCore.so")
 ROOT.gSystem.Load("libRIO.so")
