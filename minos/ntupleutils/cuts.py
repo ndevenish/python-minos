@@ -6,3 +6,6 @@ def get_cutter(name):
 
 def BravoTwo():
   return get_cutter("BravoTwo")
+
+def Passthrough():
+  return get_cutter("Passthrough")
