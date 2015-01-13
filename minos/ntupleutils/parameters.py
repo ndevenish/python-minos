@@ -41,7 +41,9 @@ class Parameters(object):
     pars.Dm2Bar(self.parameters.get("dm2bar", 0.0))
     pars.Sn2Bar(self.parameters.get("sn2bar", 0.0))
     pars.FixAllParameters()
-    pars.SetQuietMode(True)
+    # At some point, this was added
+    if hasattr(pars, "SetQuietMode"):
+      pars.SetQuietMode(True)
     return pars
 
   def copy_with(self, **kwargs):
