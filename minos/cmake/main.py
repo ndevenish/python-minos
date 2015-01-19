@@ -1,6 +1,7 @@
 # coding: utf-8
 
-"""
+"""Handles Minossoft releases with CMake.
+
 Usage:
   cmrt [options] bootstrap <folder>
   cmrt [options] release --release=<TAG> <folder>
@@ -49,7 +50,11 @@ from __future__ import division, print_function
 
 from docopt import docopt
 
+from .cvs import get_release_list, get_package_list
+
 def main(args):
   args = docopt(__doc__)
   print (args)
+  print (get_release_list())
+  print (get_package_list(u"R2.9"))
   return 1

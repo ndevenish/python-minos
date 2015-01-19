@@ -7,6 +7,6 @@ setup(name="minos",
       author_email="ndevenish@gmail.com",
       packages=['minos'],
       scripts=['bin/cmrt'],
-      package_data={'minos': ['cmake/data/*.cmake']},
+      package_data={'minos': ['cmake/data/*.cmake', 'cmake/data/*.txt']},
       requires=["docopt"],
      )
