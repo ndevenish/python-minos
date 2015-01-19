@@ -70,7 +70,7 @@ ROOT.gSystem.Load("libOscProb.so")
 # For fiducial volume function
 ROOT.gSystem.Load("libRecoBase.so")
 ROOT.gSystem.Load("libDataUtil.so")
-
+ROOT.gSystem.Load("libXMLParser.so")
 
 from ROOT import (MajCInfo, MajorityCurvature, NuCounter, NuCuts,
                   NuDemoModule, NuEvent, NuExtraction, NuFluctuator,
