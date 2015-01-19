@@ -1,2 +1,3 @@
 *.pyc
 minos.egg-info/
+._*
