@@ -19,11 +19,11 @@ class Fitter(object):
       parameters = parameters.toMM()
     return sum(x.ComparePredWithData(parameters) for x in self.runs)
 
-  def minimize(self, parameters, variables, options=None):
+  def minimize(self, parameters, variables, options=None, bounds=None):
     """Run a minimization routine over specified variables."""
     # Build the actual variable parameters object for minimization
     min_pars = np.asarray([parameters[x] for x in variables])
-    bounds = [parameters.bounds(x) for x in variables]
+    bounds = bounds or [parameters.bounds(x) for x in variables]
     # A temporary function to handle the swizzling
     def _do_min(var_vals):
       pars = parameters.copy_with(**{key: value for key, value in zip(variables, var_vals)})
