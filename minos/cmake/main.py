@@ -9,6 +9,7 @@ Usage:
   cmrt [options] testrel <folder> [<package> [<package>...] ]
   cmrt [options] addpkg [--virtual | --here] <package> [<version>]
   cmrt [options] create-cmake <folder>
+  cmrt [options] resolveproxy [--proxy=<proxydir>] <package> [<package>...]
 
 Options:
   -l, --log             Compile into log files
@@ -51,10 +52,16 @@ Commands:
   cmrt create-cmake <folder>
     Read a plain package folder and create the minos-cmake CMakeLists.txt
     files for the package.
+
+  cmrt resolveproxy [--proxy=<proxydir>] <package> [<package>...] 
+    Resoves all data .proxy files by softlinking them to a global proxy data
+    store, set by the --proxy option, or the SITE_PROXY_CACHE environmental
+    variable.
 """
 
 from __future__ import division, print_function
 import os
+import glob
 
 import logging
 logger = logging.getLogger(__name__)
@@ -65,6 +72,9 @@ from .cvs import get_release_list, get_package_list, retrieve_package_source
 from .cmakegen import write_package_cmakelist
 from .makeparser import parse_makefile
 
+class ArgumentError(Exception):
+  pass
+
 def main(args):
   args = docopt(__doc__)
   if args["--verbose"]:
@@ -72,15 +82,16 @@ def main(args):
   else:
     logging.basicConfig(level=logging.INFO)
 
-  print (args)
-  # print (get_release_list())
-  # print (get_package_list(u"R2.9"))
-  # return 1
-
-  if args["addpkg"]:
-    return addpkg(args)
-  if args["create-cmake"]:
-    return create_cmake(args)
+  try:
+    if args["addpkg"]:
+      return addpkg(args)
+    if args["create-cmake"]:
+      return create_cmake(args)
+    if args["resolveproxy"]:
+      return resolveproxy(args)
+  except ArgumentError as e:
+    logger.error(e)
+    return 1
 
 def addpkg(arguments):
   assert arguments["--here"]
@@ -94,3 +105,24 @@ def create_cmake(arguments):
   make = parse_makefile(os.path.join(folder, "GNUmakefile"), name)
   write_package_cmakelist(folder, make, {})
 #def write_package_cmakelist(folder, makefile, liblookup):
+
+def resolveproxy(arguments):
+  #resolveproxy [--proxy=<proxydir>] [<package> [<package>...] ]
+  # Work out the proxy directory
+  proxydir = arguments["--proxy"] or os.environ.get("SITE_PROXY_CACHE",None)
+  if not proxydir:
+    raise ArgumentError("Could not resolve proxy directory. Pass in --proxy or set SITE_PROXY_CACHE")
+  logger.info("Resolving proxy files via {}".format(proxydir))
+
+  if not all(os.path.isdir(x) for x in arguments["<package>"]):
+    raise ArgumentError("Could not resolve all listed packaged; " + str(x for x in arguments["<package>"] if not os.path.isdir(x)))
+
+  for package in arguments["<package>"]:
+    for filename in glob.glob(os.path.join(package, "data", "*.proxy")):
+      dest = open(filename).read().strip()
+      assert dest.startswith("minossoft/")
+      dest = os.path.join(proxydir, dest[len("minossoft/"):])
+      assert os.path.isfile(dest)
+      source = filename[:-6]
+      logger.info("Linking {} to {}".format(source, dest))
+      os.symlink(dest, source)
