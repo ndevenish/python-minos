@@ -3,6 +3,9 @@
 import sys, os
 from docopt import docopt
 from .pyroot import NuBase, NuDSTAna
+from minos.ntupleutils import NuXMLConfig
+
+from minos.runquality import RunQualityFinder
 
 def script_wrapper(func, argv=None):
   if not argv:
@@ -26,3 +29,14 @@ def MakeSummary(input_file, output_file, xml_file):
   ana.WriteOutHistos()
   ana.CloseOutFile()
   print ("End of MakeSummary")
+
+def MicroDST(input_file, analysis_version):
+  """Usage: MicroDST <analysis_version> <input_file>"""
+  NuBase.InputFileName(input_file)
+  NuBase.LoadTrees(False)
+  RunQualityFinder.OverrideDB()
+  xml = NuXMLConfig()
+  xml.LoadKeyValue("anaVersion", analysis_version)
+  ana = NuDSTAna()
+  ana.MakeMicroDST(None, xml)
+  ana.WriteOutHistos()
