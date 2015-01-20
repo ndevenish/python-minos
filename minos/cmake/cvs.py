@@ -65,24 +65,24 @@ def retrieve_package_source(package, version):
 
 def get_release_sources(release, force=False, packages=None):
   if os.path.exists(release) and not force:
-    print ("Cannot export release while destination " + release + " already exists")
+    logger.error ("Cannot export release while destination " + release + " already exists")
     sys.exit(1)
   elif not os.path.exists(release):
     os.mkdir(release)
   if not os.path.isdir(release):
-    print ("ERROR: Release path exists, but is not a directory")
+    logger.error  ("ERROR: Release path exists, but is not a directory")
     sys.exit(2)
   os.chdir(release)
 
-  print ("Retrieving package list for release " + release)
+  logger.info ("Retrieving package list for release " + release)
   package_list = get_package_list(release)
-  print ("Found {} packages".format(len(package_list)))
+  logger.info ("Found {} packages".format(len(package_list)))
 
   if packages:
     package_list = [x for x in package_list if x.name in packages]
 
   for package in package_list:
-    print ("Retrieving {}...".format(package.name))
+    logger.info ("Retrieving {}...".format(package.name))
     retrieve_package_source(package.name, package.version)  
 
 def get_release_list():

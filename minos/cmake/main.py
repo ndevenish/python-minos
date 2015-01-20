@@ -4,7 +4,7 @@
 
 Usage:
   cmrt [options] bootstrap <folder>
-  cmrt [options] release --release=<TAG> <folder>
+  cmrt [options] release <release_name>
   cmrt [options] build [<folder>]
   cmrt [options] testrel <folder> [<package> [<package>...] ]
   cmrt [options] addpkg [--virtual | --here] <package> [<version>]
@@ -27,7 +27,7 @@ Commands:
     Prepares a folder for a CMAKE-enabled base release of minossoft, including
     activation script and FindMinos.cmake sources.
 
-  cmrt release --release=<TAG> <folder>
+  cmrt release <release_name>
     Fetches all the source for a new base release. release_name should be the
     version desired, usually 'development', given no other preference. If the
     target folder has the bootstrap infrastructure in place, then the CMake
@@ -68,7 +68,7 @@ logger = logging.getLogger(__name__)
 
 from docopt import docopt
 
-from .cvs import get_release_list, get_package_list, retrieve_package_source
+from .cvs import retrieve_package_source, get_release_sources
 from .cmakegen import write_package_cmakelist
 from .makeparser import parse_makefile
 
@@ -89,6 +89,8 @@ def main(args):
       return create_cmake(args)
     if args["resolveproxy"]:
       return resolveproxy(args)
+    if args["release"]:
+      return release(args)
   except ArgumentError as e:
     logger.error(e)
     return 1
@@ -126,3 +128,7 @@ def resolveproxy(arguments):
       source = filename[:-6]
       logger.info("Linking {} to {}".format(source, dest))
       os.symlink(dest, source)
+
+def release(arguments):
+  releasename = arguments["<release_name>"]
+  get_release_sources(releasename)
