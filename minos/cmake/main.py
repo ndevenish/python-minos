@@ -8,7 +8,7 @@ Usage:
   cmrt [options] build [<folder>]
   cmrt [options] testrel <folder> [<package> [<package>...] ]
   cmrt [options] addpkg [--virtual | --here] <package> [<version>]
-  cmrt [options] create-cmake <folder>
+  cmrt [options] create-cmake <folder> [<folder>...]
   cmrt [options] resolveproxy [--proxy=<proxydir>] <package> [<package>...]
 
 Options:
@@ -49,9 +49,10 @@ Commands:
     is not specified) and adding the package to the relevant CMake
     infrastructure files.
 
-  cmrt create-cmake <folder>
-    Read a plain package folder and create the minos-cmake CMakeLists.txt
-    files for the package.
+  cmrt create-cmake <folder> [<folder>...]
+    Read a folder and create the minos-cmake CMakeLists.txt files if the folder
+    is a package, and the general CMake infrastructure if the folder is a base
+    release (identified by an empty .base_release file).
 
   cmrt resolveproxy [--proxy=<proxydir>] <package> [<package>...] 
     Resoves all data .proxy files by softlinking them to a global proxy data
@@ -69,8 +70,8 @@ logger = logging.getLogger(__name__)
 from docopt import docopt
 
 from .cvs import retrieve_package_source, get_release_sources
-from .cmakegen import write_package_cmakelist
-from .makeparser import parse_makefile
+from .cmakegen import write_package_cmakelist, write_release_cmake, create_lookup
+from .makeparser import parse_makefile, MakefileError
 
 class ArgumentError(Exception):
   pass
@@ -102,10 +103,41 @@ def addpkg(arguments):
   retrieve_package_source(arguments["<package>"][0], arguments["<version>"])
 
 def create_cmake(arguments):
-  folder = arguments["<folder>"]
-  name = os.path.basename(folder[:-1] if folder.endswith("/") else folder)
-  make = parse_makefile(os.path.join(folder, "GNUmakefile"), name)
-  write_package_cmakelist(folder, make, {})
+  for folder in arguments["<folder>"]:
+    # If folder contains .base_release, then it is a release. Otherwise, a package
+    if os.path.isfile(os.path.join(folder, ".base_release")):
+      packages = []
+      makefiles = []
+      # Process the contents of each subfolder
+      _, dirs, _ = next(os.walk(folder))
+      for package in dirs:
+        packageMakefile = os.path.join(folder, package, "GNUmakefile")
+        if not os.path.isfile(packageMakefile):
+          continue
+        try:
+          makefile = parse_makefile(packageMakefile, package)
+        except MakefileError as ex:
+          logger.error("Could not process {}; {}".format(package, ex))
+          continue
+        packages.append((package,makefile))
+        makefiles.append(makefile)
+        #makefiles.append(makefile)
+      # Now we have all the makefiles, build the lookup
+      liblookup = create_lookup(makefiles)
+      for package,makefile in packages:
+        write_package_cmakelist(os.path.join(folder, package), makefile, liblookup)
+      # Now, insert the infrastructure
+      logger.info("Writing CMake infrastructure")
+      write_release_cmake(folder, [x for x,_ in packages])
+
+    elif os.path.isfile(os.path.join(folder, "GNUmakefile")):
+      # We have been given a package.
+      name = os.path.basename(folder[:-1] if folder.endswith("/") else folder)
+      make = parse_makefile(os.path.join(folder, "GNUmakefile"), name)
+      # Have to use an empty lookup for now as don't want to process everything
+      write_package_cmakelist(folder, make, {})
+    else:
+      raise ArgumentError("Could not identify {} as a release or a package".format(folder))
 #def write_package_cmakelist(folder, makefile, liblookup):
 
 def resolveproxy(arguments):
