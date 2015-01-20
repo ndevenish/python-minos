@@ -121,3 +121,6 @@ __all__ = [ "MajCInfo", "MajorityCurvature", "NuCounter", "NuCuts",
             "NuEZFitterNSI", "NuEZRunsFitter", "NuFCConfig", "NuStatistics",
             "NuContour", "ConfigFile", "NuMatrix", "NuMatrix1D", "NuMatrix2D",
             "NuMatrixCPT", "NuCutter", "NuCut"]
+
+# Used by calibrator in certain instances
+ROOT.gSystem.Load("libDcsUser.so")

@@ -38,5 +38,5 @@ def MicroDST(input_file, analysis_version):
   xml = NuXMLConfig()
   xml.LoadKeyValue("anaVersion", analysis_version)
   ana = NuDSTAna()
-  ana.MakeMicroDST(None, xml)
+  ana.MakeMicroDST(analysis_version, xml)
   ana.WriteOutHistos()
