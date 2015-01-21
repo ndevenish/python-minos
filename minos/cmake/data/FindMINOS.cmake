@@ -28,9 +28,10 @@ if (SRT_PUBLIC_CONTEXT)
   endif()
 endif()
 
+# If the public context is structured with an include directory, use that
 if (IS_DIRECTORY "${SRT_PUBLIC_CONTEXT}/include")
   SET(_SRT_INCLUDE "${SRT_PUBLIC_CONTEXT}/include")
-elseif(NOT ${MINOS_TESTREL})
+else()
   SET(_SRT_INCLUDE "${SRT_PUBLIC_CONTEXT}")
 endif()
 
