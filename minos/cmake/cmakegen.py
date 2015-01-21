@@ -61,6 +61,7 @@ def write_package_cmakelist(folder, makefile, liblookup):
     #find_package(PkgConfig REQUIRED)
     data = data + "\n".join(["pkg_search_module(GSL REQUIRED gsl)",
                              "link_directories ( ${GSL_LIBRARY_DIRS} )",
+                             "include_directories ( ${GSL_INCLUDE_DIRS} )",
                              "target_link_libraries( {} ${{GSL_LIBRARIES}})".format(targetname)]) + "\n"
 
   if makefile.uses_mysql:
