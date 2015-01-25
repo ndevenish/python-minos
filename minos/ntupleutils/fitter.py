@@ -2,7 +2,13 @@
 
 from .pyroot import NuMMRun
 import numpy as np
-import scipy.optimize
+
+# Handle the case where scipy does not work
+try:
+  from scipy.optimize import minimize
+except ImportError as e:
+  def minimize(*args, **kwargs):
+    raise ImportError("Could not import scipy.optimize; {}".format(e))
 
 class Fitter(object):
   def __init__(self, runs=None):
@@ -29,6 +35,6 @@ class Fitter(object):
       pars = parameters.copy_with(**{key: value for key, value in zip(variables, var_vals)})
       return self.likelihood(pars)
 
-    return scipy.optimize.minimize(_do_min, min_pars, bounds=bounds, options=options)
+    return minimize(_do_min, min_pars, bounds=bounds, options=options)
 
 
