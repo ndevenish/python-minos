@@ -37,7 +37,9 @@ if __name__ == "__main__":
   xml = minos.ntupleutils.NuXMLConfig()
   xml.LoadKeyValue("binningScheme", "4")
   xml.LoadKeyValue("anaVersion", anaVersion)
-  xml.LoadKeyValue("runPeriod", args["<run_number>"])
+  #xml.LoadKeyValue("runPeriod", args["<run_number>"])
+  xml.LoadKeyValue("useBeamWeight", "1")
+  
   fluxHelper = minos.ntupleutils.NuFluxHelper(xml)
 
   particles = vector(int)()
