@@ -95,7 +95,7 @@ from ROOT import (MajCInfo, MajorityCurvature, NuCounter, NuCuts,
                   NuFCFitterNSINubar, NuFCFitterNSINu, NuABFitter, NuEZFitter, 
                   NuEZFitterNSI, NuEZRunsFitter, NuFCConfig, NuStatistics, 
                   NuContour, ConfigFile, NuMatrix, NuMatrix1D, NuMatrix2D, 
-                  NuMatrixCPT, NuCutter, NuCut)
+                  NuMatrixCPT, NuCutter, NuCut, NuParticle)
 
 __all__ = [ "MajCInfo", "MajorityCurvature", "NuCounter", "NuCuts",
             "NuDemoModule", "NuEvent", "NuExtraction", "NuFluctuator",
@@ -120,7 +120,7 @@ __all__ = [ "MajCInfo", "MajorityCurvature", "NuCounter", "NuCuts",
             "NuFCFitterNSINubar", "NuFCFitterNSINu", "NuABFitter", "NuEZFitter",
             "NuEZFitterNSI", "NuEZRunsFitter", "NuFCConfig", "NuStatistics",
             "NuContour", "ConfigFile", "NuMatrix", "NuMatrix1D", "NuMatrix2D",
-            "NuMatrixCPT", "NuCutter", "NuCut"]
+            "NuMatrixCPT", "NuCutter", "NuCut", "NuParticle"]
 
 # Used by calibrator in certain instances
 ROOT.gSystem.Load("libDcsUser.so")
