@@ -24,6 +24,7 @@ from datatool import Datatool
 if __name__ == "__main__":
   args = docopt(__doc__)
   logging.basicConfig(level='DEBUG' if args["-v"] else "INFO")
+  logging.getLogger("datatool").setLevel("INFO")
 
   # Sort out analysis version
   if args["-a"]:
