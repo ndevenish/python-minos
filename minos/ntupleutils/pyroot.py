@@ -72,6 +72,9 @@ ROOT.gSystem.Load("libRecoBase.so")
 ROOT.gSystem.Load("libDataUtil.so")
 ROOT.gSystem.Load("libXMLParser.so")
 
+# For flux processing
+ROOT.gSystem.Load("libMCReweight.so")
+
 from ROOT import (MajCInfo, MajorityCurvature, NuCounter, NuCuts,
                   NuDemoModule, NuEvent, NuExtraction, NuFluctuator,
                   NuFluggChain, NuFluxChain, NuFluxHelper, NuGeneral, 
