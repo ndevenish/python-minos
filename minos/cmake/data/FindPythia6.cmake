@@ -21,7 +21,7 @@ set(_pythia6dirs
   /usr/lib/pythia6
   /usr/local/lib/pythia6)
 
-find_path(PYTHIA6_INCLUDE_DIR general_pythia.inc
+find_path(PYTHIA6_INCLUDE_DIR NAMES general_pythia.inc pyfunc.inc pyjets.inc  pypars.inc  pysubs.inc
            HINTS ${_pythia6dirs}
            PATH_SUFFIXES include inc
            DOC "Specify the Pythia6 include dir here.")
