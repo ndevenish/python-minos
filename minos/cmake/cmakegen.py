@@ -84,8 +84,8 @@ ENDIF()
   if makefile.uses_neugen:
     data = data + """
 
-include_directories ( ${NEUGEN3_INCLUDE_DIRS} )
-target_link_libraries ( {} ${NEUGEN3_LIBRARIES} )
+include_directories ( ${{NEUGEN3_INCLUDE_DIRS}} )
+target_link_libraries ( {} ${{NEUGEN3_LIBRARIES}} )
 ENDIF(NEUGEN3_FOUND)
 """.format(targetname)
 
