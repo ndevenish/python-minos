@@ -74,11 +74,11 @@ ENDIF()
     data = data + "set_target_properties({} PROPERTIES EXCLUDE_FROM_ALL 1)\n".format(targetname)
 
   if makefile.uses_gsl:
-    #find_package(PkgConfig REQUIRED)
-    data = data + "\n".join(["pkg_search_module(GSL REQUIRED gsl)",
-                             "link_directories ( ${GSL_LIBRARY_DIRS} )",
-                             "include_directories ( ${GSL_INCLUDE_DIRS} )",
-                             "target_link_libraries( {} ${{GSL_LIBRARIES}})".format(targetname)]) + "\n"
+    data = data + """find_package(GSL REQUIRED)
+link_directories ( ${{GSL_LIBRARY_DIRS}} )
+include_directories ( ${{GSL_INCLUDE_DIRS}} )
+target_link_libraries ( {} ${{GSL_LIBRARIES}} )
+""".format(targetname)
 
   if makefile.uses_mysql:
     data = data + "\n" + "include_directories ( ${MYSQL_INCLUDE_DIR} )\n" + "target_link_libraries( {} ${{MYSQL_LIBRARIES}})\n".format(targetname) + "\n"
@@ -158,8 +158,9 @@ def write_release_cmake(release_base, packages):
   copy_data("FindROOT.cmake",  os.path.join(module_dir, "FindROOT.cmake"))
   copy_data("FindMySQL.cmake", os.path.join(module_dir, "FindMySQL.cmake"))
   copy_data("FindMINOS.cmake", os.path.join(module_dir, "FindMINOS.cmake"))
-  copy_data("FindNUEGEN3.cmake", os.path.join(module_dir, "FindNEUGEN3.cmake"))
+  copy_data("FindNEUGEN3.cmake", os.path.join(module_dir, "FindNEUGEN3.cmake"))
   copy_data("FindPythia6.cmake", os.path.join(module_dir, "FindPythia6.cmake"))
+  copy_data("FindGSL.cmake", os.path.join(module_dir, "FindGSL.cmake"))
 
   # Raw CMakeLists
   cmake_base = resource_string(__name__, "data/BaseCMakeLists.txt")
