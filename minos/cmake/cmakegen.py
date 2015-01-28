@@ -32,6 +32,9 @@ def write_package_cmakelist(folder, makefile, liblookup):
   if makefile.uses_mysql:
     data = data + "find_package(MySQL)\nIF (MYSQL_FOUND)\n"
 
+  if makefile.uses_neugen:
+    data = data + "find_package(NEUGEN3)\nIF (NEUGEN3_FOUND)\n"
+      
   if makefile.uses_fortran:
     data = data + "enable_language(Fortran)\n"
     cpp_sources = cpp_sources + makefile.vars["LIBFFILES"]
@@ -72,6 +75,10 @@ def write_package_cmakelist(folder, makefile, liblookup):
   if makefile.uses_mysql:
     data = data + "\n" + "include_directories ( ${MYSQL_INCLUDE_DIR} )\n" + "target_link_libraries( {} ${{MYSQL_LIBRARIES}})\n".format(targetname) + "\n"
     data = data + "\nENDIF(MYSQL_FOUND)\n"
+
+  if makefile.uses_neugen:
+      data = data + "\ninclude_directories ( ${NEUGEN3_INCLUDE_DIRS} )\n"
+      data = data + "ENDIF(NEUGEN3_FOUND)\n"
 
   if makefile.vars["LIBLIBS"]:
     libs = [x[2:] for x in makefile.vars["LIBLIBS"] if x.startswith("-l")]

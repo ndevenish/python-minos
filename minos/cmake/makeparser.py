@@ -36,6 +36,9 @@ class MakefileInfo(object):
     self.override = set() # Override variables
     self.uses_sigc = False
     self.uses_fortran = False
+    self.uses_neugen = False
+    self.uses_pythia = False
+  
 
   @property
   def all_sources(self):
@@ -335,6 +338,10 @@ def parse_makefile(filename, package, targetname=None):
   # Force this until we have proper dependency checking
   if targetname == "PulserCalibration":
     makefile.uses_mysql = True
+
+  if targetname == "NeugenInterface":
+    makefile.uses_neugen = True
+    makefile.uses_pythia = True
 
   # PhysicsNtuple/Store have clang errors
   # MidadGUI has lots of 64-bit issues, skip it (and all dependencies e.g. midad) for now
