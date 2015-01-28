@@ -339,7 +339,7 @@ def parse_makefile(filename, package, targetname=None):
   if targetname == "PulserCalibration":
     makefile.uses_mysql = True
 
-  if targetname == "NeugenInterface":
+  if targetname == "NeugenInterface" and not "dummy" in makefile.folder:
     makefile.uses_neugen = True
     makefile.uses_pythia = True
 
@@ -359,7 +359,10 @@ def parse_makefile(filename, package, targetname=None):
     feeder.dispatch(makefile)
   #for line in feeder.nextline():
     
-  
+  if targetname == "NeugenInterface" and os.path.isdir(os.path.join(makefile.folder, "dummy")):
+    if not "dummy" in makefile.vars["SUBDIRS"]:
+      makefile.vars["SUBDIRS"].append("dummy")
+
   # Process any SUBDIRs
   for subdir in makefile.vars["SUBDIRS"]:
     try:

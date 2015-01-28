@@ -95,8 +95,14 @@ target_link_libraries ( {} ${{PYTHIA6_LIBRARIES}} )
 
 include_directories ( ${{NEUGEN3_INCLUDE_DIRS}} )
 target_link_libraries ( {} ${{NEUGEN3_LIBRARIES}} )
-ENDIF(NEUGEN3_FOUND)
 """.format(targetname)
+    if targetname == "NeugenInterface":
+      data = data + """
+ELSE()
+  add_subdirectory(dummy)
+"""
+    data = data + "ENDIF(NEUGEN3_FOUND)\n"
+
 
   if makefile.vars["LIBLIBS"]:
     libs = [x[2:] for x in makefile.vars["LIBLIBS"] if x.startswith("-l")]
@@ -130,6 +136,8 @@ ENDIF(NEUGEN3_FOUND)
     ofile.write(data)
 
   for name, makefile in makefile.subdirs:
+    if targetname == "NeugenInterface" and name == "dummy":
+      continue
     write_package_cmakelist(os.path.join(folder, name), makefile, liblookup)
   #print (data)
 
