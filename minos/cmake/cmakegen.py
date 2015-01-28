@@ -82,8 +82,12 @@ ENDIF()
     data = data + "\nENDIF(MYSQL_FOUND)\n"
 
   if makefile.uses_neugen:
-      data = data + "\ninclude_directories ( ${NEUGEN3_INCLUDE_DIRS} )\n"
-      data = data + "ENDIF(NEUGEN3_FOUND)\n"
+    data = data + """
+
+include_directories ( ${NEUGEN3_INCLUDE_DIRS} )
+target_link_libraries ( {} ${NEUGEN3_LIBRARIES} )
+ENDIF(NEUGEN3_FOUND)
+""".format(targetname)
 
   if makefile.vars["LIBLIBS"]:
     libs = [x[2:] for x in makefile.vars["LIBLIBS"] if x.startswith("-l")]
