@@ -35,6 +35,9 @@ def write_package_cmakelist(folder, makefile, liblookup):
   if makefile.uses_neugen:
     data = data + "find_package(NEUGEN3)\nIF (NEUGEN3_FOUND)\n"
       
+  if makefile.uses_pythia:
+    data = data + "find_package(Pythia6 REQUIRED)\n"
+
   if makefile.uses_fortran:
     cpp_sources = cpp_sources + makefile.vars["LIBFFILES"]
     # Make sure the fortran flags match the compilation of the CXX onesßß
@@ -81,6 +84,12 @@ ENDIF()
     data = data + "\n" + "include_directories ( ${MYSQL_INCLUDE_DIR} )\n" + "target_link_libraries( {} ${{MYSQL_LIBRARIES}})\n".format(targetname) + "\n"
     data = data + "\nENDIF(MYSQL_FOUND)\n"
 
+  if makefile.uses_pythia:
+    data = data + """
+include_directories( ${{PYTHIA6_INCLUDE_DIRS}} )
+target_link_libraries ( {} ${{PYTHIA6_LIBRARIES}} )
+""".format(targetname)
+  
   if makefile.uses_neugen:
     data = data + """
 
@@ -142,6 +151,7 @@ def write_release_cmake(release_base, packages):
   copy_data("FindMySQL.cmake", os.path.join(module_dir, "FindMySQL.cmake"))
   copy_data("FindMINOS.cmake", os.path.join(module_dir, "FindMINOS.cmake"))
   copy_data("FindNUEGEN3.cmake", os.path.join(module_dir, "FindNEUGEN3.cmake"))
+  copy_data("FindPythia6.cmake", os.path.join(module_dir, "FindPythia6.cmake"))
 
   # Raw CMakeLists
   cmake_base = resource_string(__name__, "data/BaseCMakeLists.txt")
