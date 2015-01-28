@@ -74,6 +74,7 @@ ROOT.gSystem.Load("libXMLParser.so")
 
 # For flux processing
 ROOT.gSystem.Load("libMCReweight.so")
+ROOT.gSystem.Load("libNeugenInterface.so")
 
 from ROOT import (MajCInfo, MajorityCurvature, NuCounter, NuCuts,
                   NuDemoModule, NuEvent, NuExtraction, NuFluctuator,
