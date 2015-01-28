@@ -124,6 +124,7 @@ def create_cmake(arguments):
         #makefiles.append(makefile)
       # Now we have all the makefiles, build the lookup
       liblookup = create_lookup(makefiles)
+
       for package,makefile in packages:
         write_package_cmakelist(os.path.join(folder, package), makefile, liblookup)
       # Now, insert the infrastructure
@@ -134,6 +135,7 @@ def create_cmake(arguments):
       # We have been given a package.
       name = os.path.basename(folder[:-1] if folder.endswith("/") else folder)
       make = parse_makefile(os.path.join(folder, "GNUmakefile"), name)
+      print (make.vars)
       # Have to use an empty lookup for now as don't want to process everything
       write_package_cmakelist(folder, make, {})
     else:

@@ -32,6 +32,11 @@ def write_package_cmakelist(folder, makefile, liblookup):
   if makefile.uses_mysql:
     data = data + "find_package(MySQL)\nIF (MYSQL_FOUND)\n"
 
+  if makefile.uses_fortran:
+    data = data + "enable_language(Fortran)\n"
+    cpp_sources = cpp_sources + makefile.vars["LIBFFILES"]
+
+
   if makefile.vars["LIB"] and cpp_sources:
     pkg = "MINOS_ADD_LIBRARY( "
     spaces = " " * len(pkg)

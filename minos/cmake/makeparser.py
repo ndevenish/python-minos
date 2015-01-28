@@ -20,6 +20,8 @@ reContinuation = re.compile(r'[ \t]*\\\n[ \t]*', re.MULTILINE)
 reVarExpansion = re.compile(r'\$[\({]([^\)}]+)[\)}]')
 reFilterOut = re.compile(r'\$\(\s*filter-out (.*),(.*)\)')
 
+reIdentifier = re.compile("[_A-Za-z][_a-zA-Z0-9]*$")
+
 class MakefileInfo(object):
   def __init__(self, filename):
     self.file = filename
@@ -33,6 +35,7 @@ class MakefileInfo(object):
     self.skip_target = False
     self.override = set() # Override variables
     self.uses_sigc = False
+    self.uses_fortran = False
 
   @property
   def all_sources(self):
@@ -86,6 +89,15 @@ def _expand_phrase(var, makefile, feeder=None):
   if var == "skipfiles:.cxx=.h":
     # Special case
     return " ".join([x.replace("cxx", "h") for x in makefile.vars["skipfiles"]])
+
+  # In NeugenInterface, assigns from unset variable
+  if var == "BINS":
+    return ""
+
+  # If it is identifier-like, just leave it as is and print a warning
+  if value == "<expanded>" and reIdentifier.match(var):
+    print ("Warning: Do not know how to expand '{}'; Leaving as ${}".format(var,var))
+    return "$"+var
 
   if value == "<expanded>":
     raise UnrecognisedMakefileLine("Could not expand {} - unrecognised expansion form".format(var))
@@ -159,6 +171,9 @@ def _include_makefile(line, rule, makefile, feeder):
   if inc.endswith("arch_spec_sigc++.mk"):
     makefile.uses_sigc = True
 
+  if inc.endswith("arch_spec_gfortran.mk") or inc.endswith("arch_spec_f77.mk"):
+    makefile.uses_fortran = True
+
   #print ("  Including sub-makefile: " + inc, file=sys.stderr)
 
 def _vpath_dbi(line, rule, makefile, feeder):
@@ -179,12 +194,19 @@ known_conditionals = {
   'ifeq ($(TRIDPRINT),raw)': True,
   'ifeq ($(TRIDPRINT),asimage)': False,
   'ifneq ($(findstring IRIX,$(SRT_ARCH)),)': False,
-  'ifndef NEUGEN3PATH': True,
+  'ifndef NEUGEN3PATH': False,
   'ifeq (no,$(shell test -f `root-config --incdir`/NetErrors.h || echo no))': False,
   'ifeq ($(TRIDPRINT),writegif)': False,
   'ifneq ($(wildcard /usr/lib/ati),)': False,
   'ifneq ($(findstring profile,$(SRT_QUAL)),profile)': True, 
   'ifeq ($(findstring IRIX,$(SRT_ARCH)), IRIX)': False,
+  'ifneq ($(shell /bin/ls $(CERNLIBS)/libkernlib_noshift.a 2> /dev/null ),)': False,
+  'ifneq ($(shell /bin/ls $(CERNLIBS)/libpacklib_noshift.a 2> /dev/null ),)': False,
+  'ifneq ($(shell /bin/ls $(CERNLIBS)/libpdflib804.a 2> /dev/null ),)': False,
+  'ifneq ($(STDHEP_DIR),)': False,
+  'ifeq ($(F77),gfortran)': True,
+  'ifeq ($(F77),g77)': True,
+  'ifeq ($(F77),f77)': False,
 }
 def _conditional(line, rule, makefile, feeder):
   #print ("Encountered Conditional: {}".format(line))
