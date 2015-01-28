@@ -137,6 +137,7 @@ def write_release_cmake(release_base, packages):
   copy_data("FindROOT.cmake",  os.path.join(module_dir, "FindROOT.cmake"))
   copy_data("FindMySQL.cmake", os.path.join(module_dir, "FindMySQL.cmake"))
   copy_data("FindMINOS.cmake", os.path.join(module_dir, "FindMINOS.cmake"))
+  copy_data("FindNUEGEN3.cmake", os.path.join(module_dir, "FindNEUGEN3.cmake"))
 
   # Raw CMakeLists
   cmake_base = resource_string(__name__, "data/BaseCMakeLists.txt")
