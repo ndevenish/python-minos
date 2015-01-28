@@ -37,6 +37,7 @@ def write_package_cmakelist(folder, makefile, liblookup):
       
   if makefile.uses_fortran:
     cpp_sources = cpp_sources + makefile.vars["LIBFFILES"]
+    # Make sure the fortran flags match the compilation of the CXX onesßß
     data = data + """enable_language(Fortran)
 IF (${CMAKE_CXX_FLAGS} MATCHES "-m32")
   SET (CMAKE_Fortran_FLAGS ${CMAKE_Fortran_FLAGS} -m32)
