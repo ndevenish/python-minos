@@ -36,8 +36,12 @@ def write_package_cmakelist(folder, makefile, liblookup):
     data = data + "find_package(NEUGEN3)\nIF (NEUGEN3_FOUND)\n"
       
   if makefile.uses_fortran:
-    data = data + "enable_language(Fortran)\n"
     cpp_sources = cpp_sources + makefile.vars["LIBFFILES"]
+    data = data + """enable_language(Fortran)
+IF (${CMAKE_CXX_FLAGS} MATCHES "-m32")
+  SET (CMAKE_Fortran_FLAGS ${CMAKE_Fortran_FLAGS} -m32)
+ENDIF()
+"""
 
 
   if makefile.vars["LIB"] and cpp_sources:
