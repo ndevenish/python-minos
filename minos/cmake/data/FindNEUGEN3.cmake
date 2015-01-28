@@ -9,7 +9,7 @@
 find_path(NEUGEN3_INCLUDE_DIR stdhep.inc
           HINTS $ENV{NEUGEN3PATH}/inc $ENV{NEUGEN3_DIR}/inc )
 
-find_library(LIBNEUGEN3_LIBRARY NAMES libneugen3.a
+find_library(NEUGEN3_LIBRARY NAMES libneugen3.a
              HINTS $ENV{NEUGEN3PATH}/lib $ENV{NEUGEN3_DIR}/lib  )
 
 set(NEUGEN3_LIBRARIES ${NEUGEN3_LIBRARY} )
