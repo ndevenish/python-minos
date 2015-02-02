@@ -13,12 +13,8 @@ find_package(PkgConfig REQUIRED)
 pkg_search_module(SIGC REQUIRED sigc++-1.2)
 
 # Pull the environments SRT_PUBLIC_CONTEXT if set
-if (NOT SRT_PUBLIC_CONTEXT)
-  SET(SRT_PUBLIC_CONTEXT $ENV{SRT_PUBLIC_CONTEXT})
-endif()
-
-# Look for the base release, if it exists
-if (SRT_PUBLIC_CONTEXT)
+if (NOT SRT_PUBLIC_CONTEXT AND ENV{SRT_PUBLIC_CONTEXT})
+  SET(SRT_PUBLIC_CONTEXT $ENV{SRT_PUBLIC_CONTEXT} CACHE PATH "Base Minossoft Install")
   if (${SRT_PUBLIC_CONTEXT} STREQUAL ${CMAKE_SOURCE_DIR})
     MESSAGE(STATUS "Found SRT_PUBLIC_CONTEXT equivalent to local directory; Building base release")
     SET(MINOS_TESTREL FALSE)
@@ -26,8 +22,8 @@ if (SRT_PUBLIC_CONTEXT)
     MESSAGE(STATUS "Found SRT_PUBLIC_CONTEXT. Building test release.")
     SET(MINOS_TESTREL TRUE)
   endif()
-else()
-  SET(SRT_PUBLIC_CONTEXT ${CMAKE_SOURCE_DIR})
+elseif(NOT SRT_PUBLIC_CONTEXT)
+  SET(SRT_PUBLIC_CONTEXT ${CMAKE_SOURCE_DIR} CACHE PATH "Base Minossoft Install")
   MESSAGE(STATUS "No Prior SRT_PUBLIC_CONTEXT. Building base release")
 endif()
 

@@ -161,6 +161,7 @@ def write_release_cmake(release_base, packages):
   copy_data("FindNEUGEN3.cmake", os.path.join(module_dir, "FindNEUGEN3.cmake"))
   copy_data("FindPythia6.cmake", os.path.join(module_dir, "FindPythia6.cmake"))
   copy_data("FindGSL.cmake", os.path.join(module_dir, "FindGSL.cmake"))
+  copy_data("Findgperftools.cmake", os.path.join(module_dir, "Findgperftools.cmake"))
 
   # Raw CMakeLists
   cmake_base = resource_string(__name__, "data/BaseCMakeLists.txt")
