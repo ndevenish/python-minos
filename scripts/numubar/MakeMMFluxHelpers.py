@@ -57,7 +57,12 @@ if __name__ == "__main__":
   logger.debug("Extrapolating: numu:{}, nubar:{}".format(*particleFlags))
 
   # Set the beam type
-  fluxHelper.BeamType(BeamType.kL010z185i)
+  if args["<run_number>"] in ("1","2","3"):
+    logger.debug("Using BeamType kL010z185i")
+    fluxHelper.BeamType(BeamType.kL010z185i)
+  else:
+    logger.debug("Using BeamType kL010z185i_rev")
+    fluxHelper.BeamType(BeamType.kL010z185i_rev)    
 
   # Set the output filename
   if args["-o"]:
