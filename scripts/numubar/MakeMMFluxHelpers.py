@@ -6,7 +6,7 @@ Usage:
     MakeMMFluxHelpers.py [-v] (all | nu | nubar) <run_number> [-o <output_filename>] [-a <anaversion>] <flux_files>
 
 Options:
-  -o <output_filename>    The output filename to use [default: FluxHelpersDefault.root]
+  -o <output_filename>    The output filename to use
   -a <anaversion>         The Analysis version to use. Defaults to BravoTwo/RHC0325STD
   -v                      Verbose (debugging) output
 """
