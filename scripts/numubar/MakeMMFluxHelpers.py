@@ -66,7 +66,7 @@ if __name__ == "__main__":
   else:
     sample = "All" if args['all'] else ("NuMu" if args["nu"] else "NuMuBar")
     name = "FluxHelpers{}Run{}.root".format(sample, args["<run_number>"])
-    logger.debug("Setting output file {}".format(name)})
+    logger.debug("Setting output file {}".format(name))
     fluxHelper.OutputFilename(name)
 
   # Configure the cross-section filename
