@@ -64,8 +64,10 @@ if __name__ == "__main__":
     logger.debug("Setting output file {}".format(args["-o"]))
     fluxHelper.OutputFilename(args["-o"])
   else:
-    logger.debug("Setting output file FluxHelpersDefault.root")
-    fluxHelper.OutputFilename("FluxHelpersDefault.root")
+    sample = "All" if args['all'] else ("NuMu" if args["nu"] else "NuMuBar")
+    name = "FluxHelpers{}Run{}.root".format(sample, args["<run_number>"])
+    logger.debug("Setting output file {}".format(name)})
+    fluxHelper.OutputFilename(name)
 
   # Configure the cross-section filename
   xsecfilename = Datatool().get_dataset("xsec").only

@@ -11,6 +11,7 @@ include(CMakeParseArguments)
 find_package(ROOT REQUIRED)
 find_package(PkgConfig REQUIRED)
 pkg_search_module(SIGC REQUIRED sigc++-1.2)
+find_package(gperftools)
 
 # Pull the environments SRT_PUBLIC_CONTEXT if set
 if (NOT SRT_PUBLIC_CONTEXT AND ENV{SRT_PUBLIC_CONTEXT})
@@ -39,6 +40,11 @@ set(MINOS_LIBRARY_DIRS ${ROOT_LIBRARY_DIR} ${SIGC_LIBRARY_DIRS} ${SRT_PUBLIC_CON
 set(MINOS_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR} ${_SRT_INCLUDE} ${ROOT_INCLUDE_DIR} ${SIGC_INCLUDE_DIRS} )
 
 FIND_PACKAGE_HANDLE_STANDARD_ARGS( MINOS DEFAULT_MSG SRT_PUBLIC_CONTEXT SIGC_FOUND ROOT_FOUND )
+
+# If we have a copy of perftools, then useit
+if (${GPERFTOOLS_FOUND})
+    include_directories ( ${GPERFTOOLS_INCLUDE_DIRS} )
+endif()
 
 # Macros
 macro (MINOS_ADD_LIBRARY PACKAGE_NAME)
@@ -73,6 +79,12 @@ macro (MINOS_ADD_LIBRARY PACKAGE_NAME)
     link_directories ( ${SIGC_LIBRARY_DIRS} )
     target_link_libraries( ${PACKAGE_NAME} ${SIGC_LIBRARIES})
   endif()
+
+  if (${GPERFTOOLS_FOUND})
+    target_link_libraries( ${PACKAGE_NAME} ${GPERFTOOLS_LIBRARIES} )
+    include_directories ( ${GPERFTOOLS_INCLUDE_DIRS} )
+  endif()
+
   # All packages should compile unexplicitly for now
   # set_target_properties( ${PACKAGE_NAME} PROPERTIES LINK_FLAGS "-undefined dynamic_lookup" )
 endmacro()
