@@ -53,7 +53,7 @@ if __name__ == "__main__":
   fluxHelper.ParticlesToExtrapolate(particles)
 
   # Check the particles and spit out debug info
-  particleFlags = [fluxHelper.IsParticleToExtrapolate(x) for x in [minos.ntupleutils.NuParticle.kNuMu, minos.ntupleutils.NuParticle.kNuMu]]
+  particleFlags = [fluxHelper.IsParticleToExtrapolate(x) for x in [minos.ntupleutils.NuParticle.kNuMu, minos.ntupleutils.NuParticle.kNuMuBar]]
   logger.debug("Extrapolating: numu:{}, nubar:{}".format(*particleFlags))
 
   # Set the beam type
