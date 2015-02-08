@@ -16,7 +16,8 @@ logger = logging.getLogger(__name__)
 
 from docopt import docopt
 
-from minos.ntupleutils import NuBase, NuXMLConfig, NuDSTAna
+from minos.ntupleutils import NuXMLConfig
+from minos.numubar import NuBase, NuDSTAna
 
 if __name__ == "__main__":
   args = docopt(__doc__)
