@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 from docopt import docopt
 
-import minos.ntupleutils as ntu
+from minos.ntupleutils import NuBase, NuXMLConfig, NuDSTAna
 
 if __name__ == "__main__":
   args = docopt(__doc__)
@@ -25,13 +25,14 @@ if __name__ == "__main__":
   else:
     logging.basicConfig(level=logging.INFO)
 
+
   #print (args)
   #assert os.path.isfile(input_file)
   #assert os.path.isfile(xml_file)
   
 
   # Construct an XML file for the dst processing
-  xml = minos.ntupleutils.NuXMLConfig()
+  xml = NuXMLConfig()
   xml.LoadKeyValue("binningScheme", args["--binning"])
   xml.LoadKeyValue("anaVersion", args["<anaVersion>"])
   logger.debug("Setting up config; binning={}, ana={}".format(args["--binning"], args["<anaVersion>"]))
