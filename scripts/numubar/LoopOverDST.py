@@ -4,11 +4,13 @@
 """Builds a DST summary .root file
 
 Usage:
-  LoopOverDST.py [-v] <input_file> <anaVersion> [-b SCHEME] <output_file> 
+  LoopOverDST.py [-v] <input_file> <anaVersion> [-b SCHEME] 
+                 [--ncana=NCANA] <output_file> 
 
 Options:
   -b SCHEME, --binning=SCHEME   The binning scheme to use [default: 4]
   -v, --verbose                 Debug output
+  --ncana=NCANA                 The NC anaVersion [default: CCA_NC]
 """
 
 import logging
@@ -36,13 +38,18 @@ if __name__ == "__main__":
   xml = NuXMLConfig()
   xml.LoadKeyValue("binningScheme", args["--binning"])
   xml.LoadKeyValue("anaVersion", args["<anaVersion>"])
+  xml.LoadKeyValue("anaVersionNC", args["--ncana"])
+  
+  logger.info("Using anaVersion " + args["<anaVersion>"])
+  logger.info("Using NC anaVersion " + args["--ncana"])
+  logger.info("Using binning scheme {}".format(args["--binning"]))
+
   # MMRereco REQUIRES a setting here, via NuSystematic::ReadXML
   xml.LoadKeyValue("name", "Nominal")
   xml.LoadKeyValue("title", "Nominal")
   xml.LoadKeyValue("shift", "1.0")
-  logger.debug("Setting up config; binning={}, ana={}".format(args["--binning"], args["<anaVersion>"]))
-
-  logger.debug("Reading {}".format(args["<input_file>"]))
+  
+  logger.info("Reading {}".format(args["<input_file>"]))
   NuBase.InputFileName(args["<input_file>"])
   NuBase.LoadTrees(False)
   # Create the analysis object
