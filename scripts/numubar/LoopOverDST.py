@@ -36,6 +36,10 @@ if __name__ == "__main__":
   xml = NuXMLConfig()
   xml.LoadKeyValue("binningScheme", args["--binning"])
   xml.LoadKeyValue("anaVersion", args["<anaVersion>"])
+  # MMRereco REQUIRES a setting here, via NuSystematic::ReadXML
+  xml.LoadKeyValue("name", "Nominal")
+  xml.LoadKeyValue("title", "Nominal")
+  xml.LoadKeyValue("shift", "1.0")
   logger.debug("Setting up config; binning={}, ana={}".format(args["--binning"], args["<anaVersion>"]))
 
   logger.debug("Reading {}".format(args["<input_file>"]))
