@@ -5,14 +5,22 @@
 
 Usage:
   LoopOverDST.py [-v] <input_file> <anaVersion> [-b SCHEME] 
-                 [--ncana=NCANA] <output_file> 
+                 [--ncana=NCANA]
+                 [--nuosc=PARS | --nuosc=PARS --barosc=PARS]
+                 <output_file> 
 
 Options:
   -b SCHEME, --binning=SCHEME   The binning scheme to use [default: 4]
   -v, --verbose                 Debug output
   --ncana=NCANA                 The NC anaVersion [default: CCA_NC]
+  --nuosc=PARS                  Pair of oscillation parameters "dm2,sn2"
+  --barosc=PARS                 Pair of antineutrino oscillation parameters,
+                                "dm2bar,sn2bar". If this is not specified,
+                                then CPT-conservation is assumed and the
+                                nuosc value is used for both.
 """
 
+from decimal import Decimal
 import logging
 logger = logging.getLogger(__name__)
 
@@ -40,6 +48,21 @@ if __name__ == "__main__":
   xml.LoadKeyValue("anaVersion", args["<anaVersion>"])
   xml.LoadKeyValue("anaVersionNC", args["--ncana"])
   
+  # Handle oscillation
+  if args["--nuosc"]:
+    dm2, sn2 = [str(Decimal(x)) for x in args["--nuosc"].split(",")]
+    if args["--barosc"]:
+      dm2bar, sn2bar = [str(Decimal(x)) for x in args["--barosc"].split(",")]
+    else:
+      dm2bar, sn2bar = dm2, sn2
+    xml.LoadKeyValue("dm2nu", dm2)
+    xml.LoadKeyValue("sn2nu", sn2)
+    xml.LoadKeyValue("dm2bar", dm2bar)
+    xml.LoadKeyValue("sn2bar", sn2bar)
+
+    logger.info("Oscillating with dm2={} sn2={}".format(dm2,sn2))
+    logger.info("             BAR dm2={} sn2={}".format(dm2bar,sn2bar))
+
   logger.info("Using anaVersion " + args["<anaVersion>"])
   logger.info("Using NC anaVersion " + args["--ncana"])
   logger.info("Using binning scheme {}".format(args["--binning"]))

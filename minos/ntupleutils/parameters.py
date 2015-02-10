@@ -18,8 +18,8 @@ class Parameters(object):
       parameters["dm2bar"], parameters["sn2bar"] = kwargs["bar"]
 
     if cpt and not "dm2bar" in parameters and not "sn2bar" in parameters:
-      parameters["dm2bar"] = parameters["dm2"]
-      parameters["sn2bar"] = parameters["sn2"]
+      parameters["dm2bar"] = parameters.get("dm2", 0.0)
+      parameters["sn2bar"] = parameters.get("sn2",0.0)
 
     self.parameters = parameters
   
