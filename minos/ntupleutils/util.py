@@ -1,10 +1,15 @@
 # coding: utf-8
 
+import uuid
+
 from .structs import ChargeSignTuple
 from .pyroot import NuMatrixSpectrum, NuMMRunFC, NuMMHelperCPT, NuMMParameters, NuUtilities
 from array import array
 
-from simplehist import Hist
+import simplehist
+from simplehist import Hist, ashist
+
+from ROOT import TH1D
 
 import numpy
 
@@ -21,6 +26,10 @@ def load_matrix_pair(filename, histname):
   nq = NuMatrixSpectrum(filename, histname.format(""))
   pq = NuMatrixSpectrum(filename, histname.format("PQ"))
   return ChargeSignTuple(nq, pq)
+
+def load_spectrum_pair(filename, histname):
+  return ChargeSignTuple._make(ashist(x) for x in load_matrix_pair(filename, histname))
+
 
 # prepare_fake_run(["Daikon07", "Dogwood3", "Bravo0720", "run1"])
 # Helper: "combined"
@@ -50,6 +59,10 @@ def binningscheme4():
 def binning_displayfd():
   return array('d', NuUtilities.RecoBins(10))
 
+
+def binning_displayfd_RHC():
+  return array('d', NuUtilities.RecoBins(8))
+
 def binning_displaynd():
   #Reco Energy: 1 Gev to 30 GeV, 2 GeV from 30 to 50 GeV; One 150 GeV bin to 200 GeV
   return array('d', NuUtilities.RecoBins(7))
@@ -68,26 +81,37 @@ def rebin(data, bins, newBins):
   return (newData, newBins)
 
 def rebin_fd(data):
-  data, bins = rebin(data.data, data.bins, binning_displayfd())
+  data, bins = rebin(data, data.bins, binning_displayfd())
+  return Hist(bins, data=data)
+
+def rebin_fd_rhc(data):
+  data, bins = rebin(data, data.bins, binning_displayfd_RHC())
   return Hist(bins, data=data)
   
 def rebin_nd(data):
-  data, bins = rebin(data.data, data.bins, binning_displaynd())
+  data, bins = rebin(data, data.bins, binning_displaynd())
   return Hist(bins, data=data)
 
 try:
-  from simplehist.converter import converts_type, fromTH1
+  from simplehist.converter import converts_type, ashist
   @converts_type("ROOT.NuMatrixSpectrum")
   def fromNuMatrixSpectrum(hist):
-    return fromTH1(hist.Spectrum())
+    rh = ashist(hist.Spectrum()).view(Spectrum)
+    rh.pot = hist.GetPOT()
+    return rh
 except ImportError:
   pass
 
 class PotArray(numpy.ndarray):
   def __array_finalize__(self, obj):
     self.pot = getattr(obj, "pot", None)
+  def __repr__(self):
+    rep = super(PotArray, self).__repr__()
+    if self.pot is not None:
+      rep = rep[:-1] + ", pot={})".format(self.pot)
+    return rep
 
-class Spectrum(simplehist.Hist):
+class Spectrum(Hist):
   def __new__(cls, bins, data=None, pot=None):
     obj = simplehist.Hist.__new__(cls, bins, data=data)
     obj.pot = pot
@@ -100,3 +124,33 @@ class Spectrum(simplehist.Hist):
     if self.pot is not None:
       rep = rep[:-1] + ", pot={})".format(self.pot)
     return rep
+  def scale_to_pot(self, POT):
+    scale = POT / self.pot
+    self *= scale
+    self.pot = POT
+  def to_numatrix(self):
+    hname = str(uuid.uuid4())[:6]
+    spectrum = TH1D(hname,hname,len(self.bins)-1, self.bins)
+    for bin_ in range(len(self.bins)-1):
+      spectrum.SetBinContent(bin_+1, self[bin_])
+    assert numpy.sum(self) == spectrum.Integral()
+    return NuMatrixSpectrum(spectrum, self.pot)
+
+def mapTuples(func, items):
+  """Run a function on every item in a nest of tuples.
+  This will recurse down the chain of tuples as long as every item
+  is a list or tuple of the same length, and call the function with 
+  every item as an argument."""
+  allTuples = all(isinstance(x, (tuple, list)) for x in items)
+  # If all are lists/tuples and with the same length...
+  if allTuples and all(len(x) == len(items[0]) for x in items):
+    # Call the self-map over every corresponding entry
+    newItems = []
+    for i in range(len(items[0])):
+      sublist = [x[i] for x in items]
+      item = mapTuples(func, sublist)
+      newItems.append(item)
+    return type(items[0])(*newItems)
+  else:
+    # Not a list of tuples, so pass into the function
+    return func(*items)

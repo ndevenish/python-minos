@@ -36,5 +36,9 @@ class Fitter(object):
       return self.likelihood(pars)
 
     return minimize(_do_min, min_pars, bounds=bounds, options=options)
+    # print (results)
+    # res2 = minimize(_do_min, results.x, method="Powell")
+    # print res2
+    return res2
 
 
