@@ -4,10 +4,6 @@ import ROOT
 
 ROOT.gSystem.Load("libNtupleUtilsFC.so")
 
-from ROOT import (NuFCDelegate, NuFCMultiDelegate, NuFCDelegateArchiver,
-                  NuFCDelegateWriterLegacy, NuFCDelegateOutput, 
-                  NuFCEvent2, NuFCEventManager, NuFCRunInfo, NuFCRunner)
+from ROOT import (NuFCEvent2)
 
-__all__ = [ "NuFCDelegate", "NuFCMultiDelegate", "NuFCDelegateArchiver",
-            "NuFCDelegateWriterLegacy", "NuFCDelegateOutput",
-            "NuFCEvent2", "NuFCEventManager", "NuFCRunInfo", "NuFCRunner"]
+__all__ = [ "NuFCEvent2"]

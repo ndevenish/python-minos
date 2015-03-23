@@ -1,3 +1,5 @@
 # coding: utf-8
 
-from .pyroot import *
+# from .pyroot import *
+
+from .systematics import SystematicShifts, Systematics, ThesisSystematics

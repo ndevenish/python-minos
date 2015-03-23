@@ -133,14 +133,18 @@ class Spectrum(Hist):
     spectrum = TH1D(hname,hname,len(self.bins)-1, self.bins)
     for bin_ in range(len(self.bins)-1):
       spectrum.SetBinContent(bin_+1, self[bin_])
-    assert numpy.sum(self) == spectrum.Integral()
+    assert numpy.isclose(numpy.sum(self), spectrum.Integral())
     return NuMatrixSpectrum(spectrum, self.pot)
 
-def mapTuples(func, items):
+def mapTuples(func, items, skip_none=False):
   """Run a function on every item in a nest of tuples.
   This will recurse down the chain of tuples as long as every item
   is a list or tuple of the same length, and call the function with 
-  every item as an argument."""
+  every item as an argument.
+
+  Arguments:
+    skip_none:  if True, instances of None are not passed through
+  """
   allTuples = all(isinstance(x, (tuple, list)) for x in items)
   # If all are lists/tuples and with the same length...
   if allTuples and all(len(x) == len(items[0]) for x in items):
@@ -148,9 +152,28 @@ def mapTuples(func, items):
     newItems = []
     for i in range(len(items[0])):
       sublist = [x[i] for x in items]
-      item = mapTuples(func, sublist)
+      item = mapTuples(func, sublist, skip_none=skip_none)
       newItems.append(item)
-    return type(items[0])(*newItems)
+    if hasattr(items[0], "_make"):
+      return type(items[0])._make(newItems)
+    else:
+      return type(items[0])(newItems)
   else:
     # Not a list of tuples, so pass into the function
-    return func(*items)
+    if items == [None] and skip_none:
+      return None
+    else:
+      return func(*items)
+
+def iterTuples(item, path=False):
+  """Iterates over every item of a multiple-depth tuple"""
+  if isinstance(item, tuple):
+    for i, subItem in enumerate(item):
+      myPath = item._fields[i] if hasattr(item, "_fields") else i
+      for x, _path in iterTuples(subItem, path=True):
+        if path:
+          yield x, tuple([myPath]+list(_path))
+        else:
+          yield x
+  else:
+    yield item, tuple()
