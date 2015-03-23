@@ -1,8 +1,12 @@
 # coding: utf-8
 
-from collections import namedtuple
+# from collections import namedtuple
+from enum import IntEnum
+
+from minos.operatuple import operatable_namedtuple as namedtuple
 
 ChargeSignTuple = namedtuple("ChargeSignTuple", ["nq", "pq"])
+ChargeSign = namedtuple("ChargeSign", ["nq", "pq"])
 OscillationParameters = namedtuple("OscillationParameters", ["dm2", "sn2"])
 NeutrinoSign = namedtuple("NeutrinoSign", ["nu", "bar"])
 Detectorset = namedtuple("Detectorset", ["near", "far", "tau"])
@@ -11,3 +15,6 @@ HornCurrent = namedtuple("HornCurrent", ["fhc","rhc"])
 
 SystematicInformation = namedtuple("SystematicInformation", ["enum", "name", "function", "mode"])
 
+class Detector(IntEnum):
+  near = 1
+  far = 2
