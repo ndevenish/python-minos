@@ -3,11 +3,12 @@
 
 """
 Usage:
-    MakeMMFluxHelpers.py [-v] (all | nu | nubar) <run_number> [-o <output_filename>] [-a <anaversion>] <flux_files>
+    MakeMMFluxHelpers.py [-v] (all | nu | nubar) <run_number>
+                         [-o <output_filename>] [-a <anaversion>] <flux_files>
 
 Options:
   -o <output_filename>    The output filename to use
-  -a <anaversion>         The Analysis version to use. Defaults to BravoTwo/RHC0325STD
+  -a <anaversion>         The Analysis version, default BravoTwo/RHC0325STD
   -v                      Verbose (debugging) output
 """
 
@@ -30,16 +31,16 @@ if __name__ == "__main__":
   if args["-a"]:
     anaVersion = args["-a"]
   else:
-    anaVersion = "BravoTwo" if args["<run_number>"] in ("1","2","3") else "RHC0325STD"
+    anaVersion = "BravoTwo" if args["<run_number>"] in ("1", "2", "3") \
+        else "RHC0325STD"
   logging.debug("Using analysis version " + anaVersion)
 
   # Construct an XML file for the flux helper
   xml = minos.ntupleutils.NuXMLConfig()
   xml.LoadKeyValue("binningScheme", "4")
   xml.LoadKeyValue("anaVersion", anaVersion)
-  #xml.LoadKeyValue("runPeriod", args["<run_number>"])
   xml.LoadKeyValue("useBeamWeight", "1")
-  
+
   fluxHelper = minos.ntupleutils.NuFluxHelper(xml)
 
   particles = vector(int)()
@@ -53,16 +54,18 @@ if __name__ == "__main__":
   fluxHelper.ParticlesToExtrapolate(particles)
 
   # Check the particles and spit out debug info
-  particleFlags = [fluxHelper.IsParticleToExtrapolate(x) for x in [minos.ntupleutils.NuParticle.kNuMu, minos.ntupleutils.NuParticle.kNuMuBar]]
+  particleFlags = [fluxHelper.IsParticleToExtrapolate(x)
+                   for x in [minos.ntupleutils.NuParticle.kNuMu,
+                             minos.ntupleutils.NuParticle.kNuMuBar]]
   logger.debug("Extrapolating: numu:{}, nubar:{}".format(*particleFlags))
 
   # Set the beam type
-  if args["<run_number>"] in ("1","2","3"):
+  if args["<run_number>"] in ("1", "2", "3"):
     logger.debug("Using BeamType kL010z185i")
     fluxHelper.BeamType(BeamType.kL010z185i)
   else:
     logger.debug("Using BeamType kL010z185i_rev")
-    fluxHelper.BeamType(BeamType.kL010z185i_rev)    
+    fluxHelper.BeamType(BeamType.kL010z185i_rev)
 
   # Set the output filename
   if args["-o"]:
@@ -77,5 +80,5 @@ if __name__ == "__main__":
   # Configure the cross-section filename
   xsecfilename = Datatool().get_dataset("xsec").only
   fluxHelper.CrossSectionFile(xsecfilename)
-  
+
   fluxHelper.MakeHelperHistos(args["<flux_files>"])

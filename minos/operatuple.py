@@ -1,11 +1,13 @@
-# coding: utf-8
+# coding: utf-8
 
 from collections import namedtuple
+
 
 def _unaryMethodGen(name):
   def __method(self):
     return type(self)._make(getattr(x, name)() for x in self)
   return __method
+
 
 def _binaryMethodGen(name):
   def __method(self, other):

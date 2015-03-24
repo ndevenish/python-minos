@@ -9,7 +9,6 @@ Usage:
                       <output_file>
 """
 
-import os
 import subprocess
 import logging
 logger = logging.getLogger(__name__)
@@ -34,10 +33,11 @@ if __name__ == "__main__":
   # for files in ("--near","--far","--tau","--nuflux","--barflux","--allflux"):
   #   assert os.path.isfile(args[files])
 
-  argOrder = ["--near","--far","<output_file>","--nuflux","--barflux","--allflux","--tau"]
+  argOrder = ["--near", "--far", "<output_file>", "--nuflux",
+              "--barflux", "--allflux", "--tau"]
   root_args = ",".join('"{}"'.format(args[x]) for x in argOrder)
   root_command = "{}({})".format(base_script, root_args)
   logger.info("Running root with " + root_command)
-  results = subprocess.call(["root","-b","-q",root_command])
+  results = subprocess.call(["root", "-b", "-q", root_command])
   if results:
     logger.error("ROOT signalled failure with {}".format(results))

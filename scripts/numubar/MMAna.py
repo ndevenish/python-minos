@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# coding: utf-8
+# coding: utf-8
 
 """Builds a Normalised Ana file
 
@@ -12,14 +12,13 @@ logger = logging.getLogger(__name__)
 
 from docopt import docopt
 
-#from minos.ntupleutils import NuXMLConfig
 from minos.numubar import NuBase, NuDSTAna
 
 if __name__ == "__main__":
   args = docopt(__doc__)
   logging.basicConfig(level=logging.DEBUG)
-  
-  # Set up the framework
+
+  # Set up the framework
   logger.info("Reading {}".format(args["<input_file>"]))
   NuBase.InputFileName(args["<input_file>"])
   NuBase.LoadTrees(False)
@@ -31,4 +30,4 @@ if __name__ == "__main__":
   ana.MMAna("null")
   ana.WriteOutHistos()
   ana.CloseOutFile()
-  logger.info ("End of MMAna script")
+  logger.info("End of MMAna script")

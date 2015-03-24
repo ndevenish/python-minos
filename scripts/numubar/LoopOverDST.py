@@ -1,13 +1,13 @@
 #!/usr/bin/env python
-# coding: utf-8
+# coding: utf-8
 
 """Builds a DST summary .root file
 
 Usage:
-  LoopOverDST.py [-v] <input_file> <anaVersion> [-b SCHEME] 
+  LoopOverDST.py [-v] <input_file> <anaVersion> [-b SCHEME]
                  [--ncana=NCANA]
                  [--nuosc=PARS | --nuosc=PARS --barosc=PARS]
-                 <output_file> 
+                 <output_file>
 
 Options:
   -b SCHEME, --binning=SCHEME   The binning scheme to use [default: 4]
@@ -36,19 +36,13 @@ if __name__ == "__main__":
   else:
     logging.basicConfig(level=logging.INFO)
 
-
-  #print (args)
-  #assert os.path.isfile(input_file)
-  #assert os.path.isfile(xml_file)
-  
-
   # Construct an XML file for the dst processing
   xml = NuXMLConfig()
   xml.LoadKeyValue("binningScheme", args["--binning"])
   xml.LoadKeyValue("anaVersion", args["<anaVersion>"])
   xml.LoadKeyValue("anaVersionNC", args["--ncana"])
-  
-  # Handle oscillation
+
+  # Handle oscillation
   if args["--nuosc"]:
     dm2, sn2 = [str(Decimal(x)) for x in args["--nuosc"].split(",")]
     if args["--barosc"]:
@@ -60,8 +54,8 @@ if __name__ == "__main__":
     xml.LoadKeyValue("dm2bar", dm2bar)
     xml.LoadKeyValue("sn2bar", sn2bar)
 
-    logger.info("Oscillating with dm2={} sn2={}".format(dm2,sn2))
-    logger.info("             BAR dm2={} sn2={}".format(dm2bar,sn2bar))
+    logger.info("Oscillating with dm2={} sn2={}".format(dm2, sn2))
+    logger.info("             BAR dm2={} sn2={}".format(dm2bar, sn2bar))
 
   logger.info("Using anaVersion " + args["<anaVersion>"])
   logger.info("Using NC anaVersion " + args["--ncana"])
@@ -71,7 +65,7 @@ if __name__ == "__main__":
   xml.LoadKeyValue("name", "Nominal")
   xml.LoadKeyValue("title", "Nominal")
   xml.LoadKeyValue("shift", "1.0")
-  
+
   logger.info("Reading {}".format(args["<input_file>"]))
   NuBase.InputFileName(args["<input_file>"])
   NuBase.LoadTrees(False)
@@ -82,4 +76,4 @@ if __name__ == "__main__":
   ana.MMRereco("null", xml)
   ana.WriteOutHistos()
   ana.CloseOutFile()
-  logger.info ("End of MakeSummary")
+  logger.info("End of MakeSummary")
