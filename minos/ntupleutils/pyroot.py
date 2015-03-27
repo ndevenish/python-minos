@@ -8,9 +8,6 @@ logger = logging.getLogger(__name__)
 import rootpy
 from minos.rootmagic import suppress
 
-import pdb
-pdb.set_trace()
-
 QUICKLOAD_SUCCESS = None
 with suppress():
   # Attempt to load on it's own - if it does work, then we are either fully
@@ -93,36 +90,34 @@ else:
   for lib in _post_library_libs:
       ROOT.gSystem.Load(lib)
 
-import pdb
-pdb.set_trace()
+# import pdb
+# pdb.set_trace()
 
-from ROOT import (MajCInfo, MajorityCurvature, NuCounter, NuCuts,
-                  NuDemoModule, NuEvent, NuExtraction, NuFluctuator,
-                  NuFluggChain, NuFluxChain, NuFluxHelper, NuGeneral, 
-                  NuGnumiChain, NuHistos, NuHistInterpolator, NuHistSmoother, 
-                  NuInputEvents, NuLibrary, NuXMLConfig, NuMatrixFitter, 
-                  NuMatrixInput, NuMatrixMethod, NuMatrixOutput, NuMatrixSpectrum, 
-                  NuMIPP, NuMMHelper, NuMMHelperPRL, NuMMHelperPRLPQ, NuMMHelperCPT, 
-                  NuMMHelperCPTpair, NuMMHelperNoChargeCut, NuMMParameters, 
-                  NuMMRun, NuMMRunCCTutorial, NuMMRunCC2010, NuMMRunCC2010New, 
-                  NuMMRunNC2010, NuMMRunNuBar, NuMMRunCPT, NuMMRunCPTSyst, 
-                  NuMMRunPRL, NuMMRunFC, NuMMRunFCNSINubar, NuMMRunFCNSINu, 
-                  NuMMRunNDOsc, NuMMRunNSI, NuMMRunNSINu, NuMMRunNSINubar, 
-                  NuMMRunNSINu, NuMMRunTransition, NuMMRunTransSME, 
-                  NuMMRunNoChargeCut, NuMMRunTemplates, NuMMRunLED, NuFCEvent, 
-                  NuMCEvent, NuReco, NuShiftableSpectrum, NuShiftableBinnedSpectrum, 
-                  NuShiftableUnbinnedSpectrum, NuSystematic, NuSystFitter, 
-                  NuTreeWrapper, NuUtilities, NuZBeamReweight, SRMom, HoughTransNCPi0, 
-                  NuTH2Interpolator, NuFCGridPoint, NuFCGridPointNSINubar, 
-                  NuFCGridPointNSINu, NuFCExperiment, NuFCExperimentFactory, 
-                  NuFCExperimentFactoryNSI, NuFCFitter, NuFCFitterNSI, 
-                  NuFCFitterNSINubar, NuFCFitterNSINu, NuABFitter, NuEZFitter, 
-                  NuEZFitterNSI, NuEZRunsFitter, NuFCConfig, NuStatistics, 
-                  NuContour, ConfigFile, NuMatrix, NuMatrix1D, NuMatrix2D, 
-                  NuMatrixCPT, NuCutter, NuCut, NuParticle)
+# from ROOT import (MajCInfo, MajorityCurvature, NuCounter, NuCuts,
+#                   NuDemoModule, NuEvent, NuExtraction, NuFluctuator,
+#                   NuFluggChain, NuFluxChain, NuFluxHelper, NuGeneral, 
+#                   NuGnumiChain, NuHistos, NuHistInterpolator, NuHistSmoother, 
+#                   NuInputEvents, NuLibrary, NuXMLConfig, NuMatrixFitter, 
+#                   NuMatrixInput, NuMatrixMethod, NuMatrixOutput, NuMatrixSpectrum, 
+#                   NuMIPP, NuMMHelper, NuMMHelperPRL, NuMMHelperPRLPQ, NuMMHelperCPT, 
+#                   NuMMHelperCPTpair, NuMMHelperNoChargeCut, NuMMParameters, 
+#                   NuMMRun, NuMMRunCCTutorial, NuMMRunCC2010, NuMMRunCC2010New, 
+#                   NuMMRunNC2010, NuMMRunNuBar, NuMMRunCPT, NuMMRunCPTSyst, 
+#                   NuMMRunPRL, NuMMRunFC, NuMMRunFCNSINubar, NuMMRunFCNSINu, 
+#                   NuMMRunNDOsc, NuMMRunNSI, NuMMRunNSINu, NuMMRunNSINubar, 
+#                   NuMMRunNSINu, NuMMRunTransition, NuMMRunTransSME, 
+#                   NuMMRunNoChargeCut, NuMMRunTemplates, NuMMRunLED, NuFCEvent, 
+#                   NuMCEvent, NuReco, NuShiftableSpectrum, NuShiftableBinnedSpectrum, 
+#                   NuShiftableUnbinnedSpectrum, NuSystematic, NuSystFitter, 
+#                   NuTreeWrapper, NuUtilities, NuZBeamReweight, SRMom, HoughTransNCPi0, 
+#                   NuTH2Interpolator, NuFCGridPoint, NuFCGridPointNSINubar, 
+#                   NuFCGridPointNSINu, NuFCExperiment, NuFCExperimentFactory, 
+#                   NuFCExperimentFactoryNSI, NuFCFitter, NuFCFitterNSI, 
+#                   NuFCFitterNSINubar, NuFCFitterNSINu, NuABFitter, NuEZFitter, 
+#                   NuEZFitterNSI, NuEZRunsFitter, NuFCConfig, NuStatistics, 
+#                   NuContour, ConfigFile, NuMatrix, NuMatrix1D, NuMatrix2D, 
+#                   NuMatrixCPT, NuCutter, NuCut, NuParticle)
 
-import pdb
-pdb.set_trace()
 # __all__ = [ "MajCInfo", "MajorityCurvature", "NuCounter", "NuCuts",
 #             "NuDemoModule", "NuEvent", "NuExtraction", "NuFluctuator",
 #             "NuFluggChain", "NuFluxChain", "NuFluxHelper", "NuGeneral",
@@ -148,11 +143,13 @@ pdb.set_trace()
 #             "NuContour", "ConfigFile", "NuMatrix", "NuMatrix1D", "NuMatrix2D",
 #             "NuMatrixCPT", "NuCutter", "NuCut", "NuParticle"]
 
+
+# "NuInputEvents", 
 _all_ntuples = [ "MajCInfo", "MajorityCurvature", "NuCounter", "NuCuts",
             "NuDemoModule", "NuEvent", "NuExtraction", "NuFluctuator",
             "NuFluggChain", "NuFluxChain", "NuFluxHelper", "NuGeneral",
             "NuGnumiChain", "NuHistos", "NuHistInterpolator", "NuHistSmoother",
-            "NuInputEvents", "NuLibrary", "NuXMLConfig", "NuMatrixFitter",
+            "NuLibrary", "NuXMLConfig", "NuMatrixFitter",
             "NuMatrixInput", "NuMatrixMethod", "NuMatrixOutput", "NuMatrixSpectrum",
             "NuMIPP", "NuMMHelper", "NuMMHelperPRL", "NuMMHelperPRLPQ", "NuMMHelperCPT",
             "NuMMHelperCPTpair", "NuMMHelperNoChargeCut", "NuMMParameters",
@@ -176,7 +173,6 @@ _all_ntuples = [ "MajCInfo", "MajorityCurvature", "NuCounter", "NuCuts",
 __all__ = []
 
 for name in _all_ntuples:
-  print name
   try:
     cattr = getattr(ROOT, name)
     __all__.append(name)

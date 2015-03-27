@@ -1,5 +1,9 @@
 # coding: utf-8
 
+# Suppress stupid no-logging messages
+import logging
+logging.getLogger(__name__).addHandler(logging.NullHandler())
+
 from .pyroot import *
 from .structs import *
 from .parameters import Parameters
@@ -9,3 +13,4 @@ from .util import (load_matrix_pair, load_spectrum_pair, binningscheme4, rebin_f
                    mapTuples, iterTuples)
 
 import cuts
+
