@@ -22,6 +22,7 @@ import sys, os
 from collections import namedtuple
 import random
 import zlib
+import uuid
 import base64
 import math
 import logging
@@ -98,7 +99,7 @@ def main(args):
   
   # Determine the output filename
   if args["-o"] is None:
-    output_file = "chi2_{:.2f}_{:.3f}.dat".format(dm2bar*1000,sn2bar)
+    output_file = "chi2_{:.2f}_{:.3f}.{}.dat".format(dm2bar*1000,sn2bar, str(uuid.uuid4())[:6])
   else:
     output_file = args["-o"]
   detail_file = args["--detail"]
@@ -111,7 +112,7 @@ def main(args):
   logger.info("Writing experiment deltaChi2 results to {}".format(output_file))
 
   # Set up the samples that we are going to use
-  samples = [FCSample("run3",7e20), FCSample("run4",2e20)]
+  samples = [FCSample("run3",7.093e20), FCSample("run4",3.4e20)]
   oscillation_pars = ntu.Parameters(dm2=2.43e-3, sn2=1.0, dm2bar=dm2bar, sn2bar=sn2bar)
 
   # Load all event sets
