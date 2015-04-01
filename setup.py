@@ -8,5 +8,5 @@ setup(name="minos",
       packages=['minos'],
       scripts=['bin/cmrt'],
       package_data={'minos': ['cmake/data/*.cmake', 'cmake/data/*.txt']},
-      requires=["docopt", "rootpy", "numpy", "matplotlib", "enum34"],
+      requires=["docopt", "rootpy", "numpy", "matplotlib", "enum34", "scipy"],
      )
