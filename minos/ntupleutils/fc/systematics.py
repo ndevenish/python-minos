@@ -92,6 +92,13 @@ class Systematics(object):
     self.shift_crosssection(events, shifts["CombinedXSecOverall"])
     return events
 
+  def unshifted_histogram(self):
+    events = self.reduced_events.copy()
+    hist, _ = numpy.histogram(events["trkEn"]+events["shwEn"], self.binning, weights=events["rw"])
+    # hist = hist.view(ntu.Spectrum)
+    hist = ntu.Spectrum(self.binning, data=hist, pot=self.pot)
+    return hist
+
   def shifted_histogram(self, shifts):
     """Generate a set of shifts and returns a histogram"""
     events = self.shift(shifts)

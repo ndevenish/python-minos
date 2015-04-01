@@ -155,7 +155,10 @@ def main(args):
       
       # Generate a random set of shifts, and the full-statistics histograms for them
       shift = ThesisSystematics.random_shifts()
-      hists = ntu.mapTuples(lambda x: x.shifted_histogram(shift), [shifters], skip_none=True)
+      if args["--no-systematics"]:
+        hists = ntu.mapTuples(lambda x: x.unshifted_histogram(), [shifters], skip_none=True)
+      else:
+        hists = ntu.mapTuples(lambda x: x.shifted_histogram(shift), [shifters], skip_none=True)
       
       # Flucturae each shifted detector sample to make the experiment
       far_pq = ntu.HornCurrent._make(fluctuate(x.far.pq) for x in hists)
