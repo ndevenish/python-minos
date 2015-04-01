@@ -8,15 +8,13 @@ logger = logging.getLogger(__name__)
 import os
 import matplotlib.pyplot as plt
 
-import styles
-
 FORMATS = ["png", "pdf", "eps"]
 
-class Sizes(object):
-  A4 = (8.3-0.4, 11.7-0.4) # With 5mm margin on all sides
-  Standard = (5.9, 4.4)
-  Wide = (4.9, 3.3)
-  Half = (5.9*0.49, 5.9*0.49*(3./4.))
+
+
+import styles
+from .styles import Sizes
+
 
 # Save a figure to a standard thesis image directory
 def savefig(figure, location):

@@ -33,6 +33,7 @@ class Fitter(object):
     # A temporary function to handle the swizzling
     def _do_min(var_vals):
       pars = parameters.copy_with(**{key: value for key, value in zip(variables, var_vals)})
+      # print ("Evaluating {}".format(pars))
       return self.likelihood(pars)
 
     return minimize(_do_min, min_pars, bounds=bounds, options=options)

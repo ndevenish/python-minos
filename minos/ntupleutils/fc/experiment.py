@@ -1,5 +1,6 @@
 # coding: utf-8
 
+import numpy
 import minos.ntupleutils as ntu
 from .systematics import ThesisSystematics
 
@@ -21,16 +22,25 @@ class Experiment(object):
     for _ex in self.extrapolators:
       self.fitter.push_back(_ex)
     
-  def fit(self):
-    start_params = ntu.Parameters(dm2=2.5e-3, sn2=1.0, cpt=True)
+  def fit(self, params=None):
+    start_params = params or ntu.Parameters(dm2=2.5e-3, sn2=1.0, cpt=True)
     mmPars = start_params.toMM()
     mmPars.ReleaseDm2Bar()
     mmPars.ReleaseSn2Bar()
     mmPars.ConstrainPhysical()
 
     result = self.fitter.FCMinimise(mmPars)
+    
     best = ntu.Parameters(dm2=result.Dm2(), dm2bar=result.Dm2Bar(), sn2=result.Sn2(), sn2bar=result.Sn2Bar())
     return best
+
+  def fit_sin_only(self, params):
+    fitter = ntu.Fitter(self.extrapolators)
+    fitResult = fitter.minimize(params.copy_with(sn2bar=0.8), ["sn2bar"])
+    return params.copy_with(sn2bar=fitResult.x[0])
+    
+
+
 
   def likelihood(self, parameters):
     if not isinstance(parameters, ntu.NuMMParameters):

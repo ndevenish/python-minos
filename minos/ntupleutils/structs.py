@@ -1,7 +1,7 @@
 # coding: utf-8
 
 # from collections import namedtuple
-from enum import IntEnum
+from enum import IntEnum, Enum
 
 from minos.operatuple import operatable_namedtuple as namedtuple
 
@@ -18,3 +18,7 @@ SystematicInformation = namedtuple("SystematicInformation", ["enum", "name", "fu
 class Detector(IntEnum):
   near = 1
   far = 2
+
+class Current(Enum):
+  FHC = "fhc"
+  RHC = "rhc"
