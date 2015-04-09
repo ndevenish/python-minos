@@ -7,7 +7,7 @@ file or just more options.
 
 Usage:
   fc.py [-n COUNT | -u] [--no-systematics] [-v] [-o OUTPUT_FILE] 
-        [--detail=DETAIL_FILE] [--pdf] [--1dfitsin] <dm2bar> <sn2bar>
+        [--detail=DETAIL_FILE] [--pdf] [--1dfitsin | --1dfitdm] <dm2bar> <sn2bar>
 
 Options:
  -n COUNT --number=COUNT   Number of experiments to run [default: 10]
@@ -20,6 +20,8 @@ Options:
                            named the same as the output file +pdf
  --1dfitsin                Does 1D fitting fixing dm2bar - e.g. marginalising
                            for sin22thetabar at each grid point.
+ --1dfitdm                 Does 1D fitting fixing sin2bar - e.g. marginalising
+                           for dm2bar at each grid point.
 """
 
 import sys, os
@@ -168,6 +170,8 @@ def main(args):
       # Run the fit
       if args["--1dfitsin"]:
         result = experiment.fit_sin_only(oscillation_pars)
+      elif args["--1dfitdm"]:
+        result = experiment.fit_dm_only(oscillation_pars)
       else:
         result = experiment.fit(oscillation_pars)
       logger.info("SystFitter  dm2bar={:.2e} sn2bar={:.2f}".format(result["dm2bar"], result["sn2bar"]))
