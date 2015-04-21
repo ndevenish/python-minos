@@ -171,8 +171,8 @@ def main(args):
         hists = ntu.mapTuples(lambda x: x.shifted_histogram(shift), [shifters], skip_none=True)
       
       # Flucturae each shifted detector sample to make the experiment
-      far_pq = ntu.HornCurrent._make(fluctuate(x.far.pq) for x in hists)
-      expt_data = ntu.HornCurrent._make(ntu.Detectors(near=x.near,far=ntu.ChargeSignTuple(far_nq, y)) for x, y in zip(hists, far_pq))
+      far_pq = tuple(fluctuate(x.far.pq) for x in hists)
+      expt_data = tuple(ntu.Detectors(near=x.near,far=ntu.ChargeSignTuple(far_nq, y)) for x, y in zip(hists, far_pq))
       experiment = Experiment(expt_data, helpers)
 
       # Run the fit
