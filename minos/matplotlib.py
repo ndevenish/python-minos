@@ -7,12 +7,14 @@ import numpy as np
 from matplotlib.scale import ScaleBase, register_scale
 from matplotlib.ticker import (NullFormatter, ScalarFormatter, FixedLocator)
 from matplotlib.transforms import Transform
-
+import matplotlib
 
 class FixedOrderFormatter(ScalarFormatter):
     """Formats axis ticks using scientific notation with a constant order of
     magnitude"""
-    def __init__(self, order_of_mag=0, useOffset=True, useMathText=True):
+    def __init__(self, order_of_mag=0, useOffset=True, useMathText=None):
+        if useMathText is None:
+          useMathText = not matplotlib.rcParams["text.usetex"]
         self._order_of_mag = order_of_mag
         ScalarFormatter.__init__(self, useOffset=useOffset,
                                  useMathText=useMathText)

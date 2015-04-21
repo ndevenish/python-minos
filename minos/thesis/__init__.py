@@ -8,29 +8,16 @@ logger = logging.getLogger(__name__)
 import os
 import matplotlib.pyplot as plt
 
-FORMATS = ["png", "pdf", "eps"]
-
-
+from .plots import plot
+from .plots import savefig_direct as savefig
+import plots
 
 import styles
 from .styles import Sizes
 
-
-# Save a figure to a standard thesis image directory
-def savefig(figure, location):
-  basePath = "thesis"
-  if "THESIS_IMAGES" in os.environ:
-    basePath = os.environ["THESIS_IMAGES"]
-  path, name = os.path.split(location)
-  path = os.path.join(basePath, path, "images")
-  if not os.path.isdir(path):
-    os.makedirs(path)
-  path = os.path.join(path, name)
-  saved = []
-  for ext in FORMATS:
-    fullName = "{}.{}".format(path, ext)
-    saved.append(fullName)
-    figure.savefig(fullName)
-    logger.info("Saved {}".format(fullName))
-  plt.close(figure)
-  return saved
+class MathText(object):
+  dmbar = r"$\left|\Delta\bar m^2\right|$"
+  dmbaraxis = r"$\left|\Delta\bar m^2\right| \left(\textrm{eV}^2\right)$"
+  snbar = r"$\sin^2 \left(2\bar\theta\right)$"
+  snbaraxis = snbar
+  energy = r"Energy (GeV)"

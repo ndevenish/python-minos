@@ -4,12 +4,14 @@
 
 import numpy as np
 
-ACCEPTED_TYPES = {'UInt_t', 'Float_t', 'Int_t', 'Char_t'}
+ACCEPTED_TYPES = {'UInt_t', 'Float_t', 'Int_t', 'Char_t', "Double_t"}
 ROOT_TYPE_MAP = {"UInt_t": "uint32", "Float_t": "float32",
-                 "Int_t": "int32", "Char_t": "int8"}
+                 "Int_t": "int32", "Char_t": "int8", 
+                 "Double_t": "float64"}
 TREE_ACCESS_METHOD = {
     "UInt_t": lambda x: x.GetValueLong64,
     "Float_t": lambda x: x.GetValue,
+    "Double_t": lambda x: x.GetValue,
     "Int_t": lambda x: x.GetValueLong64,
     "Char_t": lambda x: x.GetValueLong64,
   }

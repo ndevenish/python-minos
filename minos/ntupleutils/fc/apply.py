@@ -38,8 +38,24 @@ class FCApplicator(object):
   def contour(self, gridCode, likesurf, likeX, likeY, **kwargs):
     """Apply the FC grid data to a likelihood surface and draw the contour"""
     assert likesurf.ndim == 2
+    # Massage the surface
+    if "color" in kwargs and not "colors" in kwargs:
+      kwargs["colors"] = kwargs["color"]
+      del kwargs["color"]
+    if "ls" in kwargs or "linestyle" in kwargs and not "linestyles" in kwargs:
+      kwargs["linestyles"] = kwargs.get("ls", kwargs.get("linestyle"))
+      kwargs.pop("ls",None)
+      kwargs.pop("linestyle", None)
+    if "lw" in kwargs or "linewidth" in kwargs and not "linewidths" in kwargs:
+      kwargs["linewidths"] = kwargs.get("lw", kwargs.get("linewidth"))
+      kwargs.pop("lw",None)
+      kwargs.pop("linewidth",None)
+    
     # Build a grid with the same data points as the likelihood surface
     grid = self.interpolate_grid(gridCode, likeX, likeY)
     # Draw a contour plot at z == 0
-    return plt.contour(likeX, likeY, (likesurf-grid).T, [0], **kwargs)
+    cs = plt.contour(likeX, likeY, (likesurf-grid).T, [0], **kwargs)
+    if kwargs.get("label") is not None:
+      cs.collections[0].set_label(kwargs["label"])
+    return cs
     

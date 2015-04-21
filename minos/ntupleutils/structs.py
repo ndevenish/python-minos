@@ -22,3 +22,7 @@ class Detector(IntEnum):
 class Current(Enum):
   FHC = "fhc"
   RHC = "rhc"
+
+class Charge(Enum):
+  NQ = -1
+  PQ =  1

@@ -110,6 +110,11 @@ class PotArray(numpy.ndarray):
     if self.pot is not None:
       rep = rep[:-1] + ", pot={})".format(self.pot)
     return rep
+  @classmethod
+  def convert(cls, froma, pot=None):
+    newv = froma.view(cls)
+    newv.pot = pot
+    return newv
 
 class Spectrum(Hist):
   def __new__(cls, bins, data=None, pot=None):
